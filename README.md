@@ -16,22 +16,16 @@
 6. postsql jdbc 연결 (프로젝트 우클릭 > 빌드패스> 익스터널 액티브 뭐시기> 자르 추가 후 빌드패스 젤 밑에꺼에서 라이브러리 추가된지 확인)
 7. 데이터 복제는 나중에 하자 
 
+#덤프 백업 및 세팅 하는법
+덤프 세팅
+1. C:\Program Files\PostgreSQL\14\bin  (덤프는 해당 경로로 이동 시켜야함)
+-> 관리자 cmd로 pg_restore -U postgres -h localhost -p 5432 -d DONATE_DB1 -c -F c DONATE_DB1_backup.dump
+비번 입력1111
+
+덤프 백업
+1. C:\Program Files\PostgreSQL\14\bin    (덤프는 내스토리지에 옮겨야함)
+->관리자 cmd로 pg_dump -U postgres -h localhost -p 5432 -d DONATE_DB1 -F c -f DONATE_DB1_backup.dump
+비번 입력1111
 
 
-쿼리
 
-데이터베이스명 - DONATE_DB1
-
-
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-ALTER TABLE users ALTER COLUMN id TYPE BIGINT;
-
-INSERT INTO users (username, email) VALUES ('john_doe', 'john@example.com');
-INSERT INTO users (username, email) VALUES ('jane_doe', 'jane@example.com');
-INSERT INTO users (username, email) VALUES ('alice', 'alice@example.com');
