@@ -17,7 +17,6 @@ import com.example.demo.donate.bank.dto.BankRequestDto;
 import com.example.demo.donate.donate.dto.DonateRequestDto;
 import com.example.demo.donate.donate.service.DonateService;
 
-import antlr.Parser;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,10 +24,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.persistence.PersistenceContext;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.persistence.*;
+import jakarta.servlet.http.*;
 
 	@RestController
 	@RequestMapping("/api")

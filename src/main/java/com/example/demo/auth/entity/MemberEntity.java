@@ -3,7 +3,9 @@ package com.example.demo.auth.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.persistence.*;
+
+import jakarta.persistence.*;
+
 
 @Entity
 @Table(name = "users")
