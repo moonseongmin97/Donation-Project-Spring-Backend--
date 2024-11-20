@@ -1,8 +1,7 @@
 package com.example.demo.common.util;
 
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.*;
 import java.util.Arrays;
 import java.util.Optional;
 

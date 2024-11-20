@@ -1,6 +1,6 @@
 package com.example.demo.donate.donate.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import com.example.demo.donate.bank.entity.BankEntity;
 import com.example.demo.donate.entity.PaymentEntity;
