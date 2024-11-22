@@ -210,8 +210,7 @@ public class MemberService {
      * @param memberDto 세션을 확인할 회원 정보가 담긴 DTO
      * @return Map<String, Object> 세션 상태 및 메시지를 담은 결과
      */
-    public Map<String, Object> findSessionMember(MemberRequestDto memberDto) {
-        Map<String, Object> result = new HashMap<>();
+    public Map<String, Object> findSessionMember(MemberRequestDto memberDto) {        Map<String, Object> result = new HashMap<>();
         MemberResponseDto responseDto = new MemberResponseDto();
         try {
             String uuid = memberDto.getUuid();
@@ -225,8 +224,11 @@ public class MemberService {
                 result.put("msg", "사용자 토큰이 존재하지 않습니다. 재로그인 부탁드립니다.");
                 result.put("data", responseDto);            	
             }else if (uuid != null && redisService.getTokenKey(uuid)) {
-                String sessionResult = redisService.getUserIdFromToken(uuid);
+            	ObjectMapper objectMapper = new ObjectMapper();
+                String sessionResult = redisService.getUserIdFromToken(uuid);           //레디스에서 회원조회                        	                    
+                responseDto = objectMapper.readValue(sessionResult, MemberResponseDto.class);    //레디스 문자열 역직렬화 (객체화)                                 
                 responseDto.setLoginYn(true);
+                
                 result.put("state", true);
                 result.put("msg", "로그인 토큰 정상");
                 result.put("data", responseDto);
