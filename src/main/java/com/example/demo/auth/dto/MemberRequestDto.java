@@ -18,6 +18,7 @@ public class MemberRequestDto {
     private String uuid;
     private String ipAddress;
     private boolean loginYn;
+    private String nickName;
 
 
 	// 기본 생성자
@@ -27,7 +28,7 @@ public class MemberRequestDto {
     public MemberRequestDto(String loginId, String username, String email, String passwordHash, 
                             String phoneNumber, String gender, String dateOfBirth, String addressLine1, 
                             String addressLine2, String city, String state, String postalCode, String country , String uuid ,
-                             String ipAddress ) {
+                             String ipAddress ,String nickName) {
         this.loginId = loginId;
         this.username = username;
         this.email = email;
@@ -43,6 +44,7 @@ public class MemberRequestDto {
         this.country = country;
         this.uuid = uuid;
         this.ipAddress = ipAddress;
+        this.nickName = nickName;
     }
 
     public String getUsername() {
@@ -172,6 +174,14 @@ public class MemberRequestDto {
 
 	public void setLoginYn(boolean loginYn) {
 		this.loginYn = loginYn;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
     // 나머지 필드에 대한 게터와 세터들도 추가

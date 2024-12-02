@@ -22,6 +22,7 @@ public class MemberResponseDto {
     private String lastLogin;
     private String uuid;
     private boolean loginYn;
+    private String nickName;
 
 
 
@@ -33,7 +34,7 @@ public class MemberResponseDto {
                              String phoneNumber, String gender, String dateOfBirth, String addressLine1, 
                              String addressLine2, String city, String state, String postalCode, 
                              String country, String profileImageUrl, String status, String createdAt, 
-                             String updatedAt, String lastLogin,String uuid ,boolean loginYn) {
+                             String updatedAt, String lastLogin,String uuid ,boolean loginYn , String nickName) {
         this.userId = userId;
         this.loginId = loginId;
         this.username = username;
@@ -54,6 +55,8 @@ public class MemberResponseDto {
         this.lastLogin = lastLogin;
         this.uuid = uuid;
         this.loginYn = loginYn;
+        this.setNickName(nickName);
+        
     }
 
     public String getLoginId() {
@@ -215,6 +218,14 @@ public class MemberResponseDto {
 
 	public void setLoginYn(boolean loginYn) {
 		this.loginYn = loginYn;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
     // 나머지 필드에 대한 게터와 세터들도 추가
