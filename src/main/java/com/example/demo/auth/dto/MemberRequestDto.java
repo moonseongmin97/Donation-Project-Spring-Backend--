@@ -2,6 +2,7 @@ package com.example.demo.auth.dto;
 
 public class MemberRequestDto {    
 
+	private Long userId;
     private String loginId;
     private String username;
     private String email;
@@ -25,10 +26,11 @@ public class MemberRequestDto {
     public MemberRequestDto() {}
     
 	// 모든 필드를 초기화하는 생성자
-    public MemberRequestDto(String loginId, String username, String email, String passwordHash, 
+    public MemberRequestDto(Long userId, String loginId, String username, String email, String passwordHash, 
                             String phoneNumber, String gender, String dateOfBirth, String addressLine1, 
                             String addressLine2, String city, String state, String postalCode, String country , String uuid ,
                              String ipAddress ,String nickName) {
+    	this.userId = userId;
         this.loginId = loginId;
         this.username = username;
         this.email = email;
@@ -45,7 +47,14 @@ public class MemberRequestDto {
         this.uuid = uuid;
         this.ipAddress = ipAddress;
         this.nickName = nickName;
-    }
+    }    
+    public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
     public String getUsername() {
 		return username;

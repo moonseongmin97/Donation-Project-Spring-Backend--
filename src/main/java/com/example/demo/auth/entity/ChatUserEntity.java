@@ -15,8 +15,8 @@ public class ChatUserEntity {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "nickname", nullable = false, unique = true, length = 50)
-    private String nickname;
+    @Column(name = "nick_name", nullable = false, unique = true, length = 50)
+    private String nickName;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
@@ -53,12 +53,12 @@ public class ChatUserEntity {
         this.userId = userId;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public Boolean getIsActive() {
