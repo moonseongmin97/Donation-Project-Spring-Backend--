@@ -11,7 +11,6 @@ import com.example.demo.auth.dto.MemberDto;
 import com.example.demo.auth.dto.MemberRequestDto;
 import com.example.demo.auth.dto.MemberResponseDto;
 import com.example.demo.auth.entity.MemberEntity;
-import com.example.demo.auth.mapper.MemberMapper;
 import com.example.demo.auth.repository.MemberRepository;
 import com.example.demo.common.dto.ResponseDto;
 import com.example.demo.common.redis.service.RedisServiceImpl;
