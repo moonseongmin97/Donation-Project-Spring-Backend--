@@ -1,0 +1,58 @@
+덤프 세팅
+1. C:\Program Files\PostgreSQL\14\bin  (덤프는 해당 경로로 이동 시켜야함)
+-> 관리자 cmd로 pg_restore -U postgres -h localhost -p 5432 -d DONATE_DB1 -c -F c DONATE_DB1_backup.dump
+비번 입력1111
+
+덤프 백업
+1. C:\Program Files\PostgreSQL\14\bin    (덤프는 내스토리지에 옮겨야함)
+->관리자 cmd로 pg_dump -U postgres -h localhost -p 5432 -d DONATE_DB1 -F c -f DONATE_DB1_backup.dump
+비번 입력1111
+
+
+---------------기부자 인서트 하는거-------------------------
+
+INSERT INTO donation (user_id, user_name, amount, donation_date, message, status, is_cancelled, created_by)
+SELECT 
+    FLOOR(RANDOM() * 1000000) + 1,                              -- user_id: 1에서 1,000,000 사이의 임의 값
+    CONCAT('User', FLOOR(RANDOM() * 1000000) + 1),              -- user_name: 'User' + 임의 값
+    ROUND((RANDOM() * 1000)::NUMERIC, 2),                       -- amount: 최대 1000까지의 임의 값 (소수점 2자리)
+    NOW() - (INTERVAL '1 day' * FLOOR(RANDOM() * 60)),          -- donation_date: 최근 2달 이내 날짜
+    'Thank you!',                                               -- message: 고정 텍스트
+    'SUCCESS',                                                  -- status: 고정 값
+    FALSE,                                                      -- is_cancelled: 고정 값
+    FLOOR(RANDOM() * 1000000) + 1                               -- created_by: 1에서 1,000,000 사이의 임의 값
+FROM 
+    generate_series(1, 500000) AS s;
+-----------------------------------------------------------------------------------------------------------------
+
+INSERT INTO donation (user_id, user_name, amount, donation_date, message, status, is_cancelled, created_by)
+SELECT 
+    FLOOR(RANDOM() * 1000000) + 1,                              -- user_id: 1에서 1,000,000 사이의 임의 값
+    CONCAT('사용자', FLOOR(RANDOM() * 100)),                    -- user_name: '사용자' + 임의 값
+    ROUND((RANDOM() * 10000000)::NUMERIC, 2),                   -- amount: 최대 10,000,000까지의 임의 값 (소수점 2자리)
+    NOW() - (INTERVAL '1 day' * FLOOR(RANDOM() * 60)),          -- donation_date: 최근 2달 이내 날짜
+    '감사합니다!',                                              -- message: 고정 텍스트
+    'SUCCESS',                                                  -- status: 고정 값
+    FALSE,                                                      -- is_cancelled: 고정 값
+    FLOOR(RANDOM() * 1000000) + 1                               -- created_by: 1에서 1,000,000 사이의 임의 값
+FROM 
+    generate_series(1, 100) AS s;                               -- 100개의 데이터 생성
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+postman 조회 -> post ->  http://localhost:8080/api/donateInsert  
+-> 바디에 데이터  ex) 
+
+{
+    "userId": 1,
+    "amount": 100.00,
+    "bankId": 2,
+    "message": "Thank you for your support!"
+}
+
+헤더에 -> Content-Type   :  application/json 
+
+
+할 수 있다.
