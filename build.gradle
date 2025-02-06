@@ -56,7 +56,7 @@ dependencies {
 	
 }
 
-
+//jar 파일
 bootJar {
 	archiveFileName = 'ROOT.Jar'
 }
