@@ -29,3 +29,23 @@
 
 
 
+
+
+
+
+
+
+<img width="552" height="355" alt="아키텍처" src="https://github.com/user-attachments/assets/7cf39463-7969-4547-96f1-4ac6572ea2e8" />
+
+
+
+
+
+
+
+
+
+
+
+
+
