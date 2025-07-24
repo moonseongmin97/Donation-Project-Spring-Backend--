@@ -1,3 +1,4 @@
+-로컬 세팅법-
 
 프론트는
 1. 비쥬얼 스튜디오 설치
@@ -26,6 +27,11 @@
 1. C:\Program Files\PostgreSQL\14\bin    (덤프는 내스토리지에 옮겨야함)
 ->관리자 cmd로 pg_dump -U postgres -h localhost -p 5432 -d DONATE_DB1 -F c -f DONATE_DB1_backup.dump
 비번 입력1111
+
+
+
+
+
 
 
 
