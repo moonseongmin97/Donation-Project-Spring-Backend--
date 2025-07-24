@@ -117,15 +117,25 @@
 <img width="626" height="435" alt="image" src="https://github.com/user-attachments/assets/8c58a62e-4816-4ea2-a560-960d6693bf1f" />
 
 *디테일한 erd  (https://www.erdcloud.com/d/3M798LiBGRR7ddbSF) 참고
+
 ⦁	사용자 (users)
+
 ⦁	기부 (donation), 결제 (payment), 채팅 (messages, chat_users), 세션 (user_sessions), 감사 메시지 (thank_you_messages)와 연관됨
+
 ⦁	기부 (donation)
+
 ⦁	bank(입금은행), payment(결제 정보), donation_history(기부 내역)와 연결됨
+
 ⦁	결제 (payment)
+
 ⦁	bank(결제 은행), transaction(결제 트랜잭션)과 연결됨
+
 ⦁	세션 (user_sessions)
+
 ⦁	로그인한 사용자의 기록 저장 (IP 주소, 로그인/로그아웃 시간)
+
 ⦁	채팅 (messages, chat_users)
+
 ⦁	사용자의 실시간 채팅 기록 저장
 
 
