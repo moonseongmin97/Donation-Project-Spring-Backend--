@@ -90,16 +90,21 @@
 ✅ User → Router → Nginx (Reverse Proxy)
 ⦁	사용자가 사이트에 접속
 ⦁	Nginx가 Reverse Proxy 역할을 수행하여 요청을 적절한 서비스로 분배
+
 ✅ Frontend (React) → Backend (Spring Boot)
 ⦁	프론트엔드는 API 요청을 백엔드로 전달
 ⦁	백엔드는 DB에서 데이터를 조회하거나, Redis에서 캐싱된 데이터를 가져옴
+
 ✅ Frontend (React) → ChatServer (Spring WebSocket)
 ⦁	WebSocket을 사용해 실시간 채팅 서버와 직접 연결
 ⦁	사용자의 메시지를 실시간으로 처리하여 다른 클라이언트에게 전달
+
 ✅ Backend ↔ Database (PostgreSQL)
 ⦁	백엔드는 PostgreSQL을 사용하여 데이터를 저장 & 조회
+
 ✅ Backend ↔ Redis (세션 & 캐싱)
 ⦁	로그인 세션 관리 및 자주 조회되는 데이터(예: 총 모금액) 캐싱
+
 ⦁	성능을 높이기 위해 Redis를 활용
 ✅ ChatServer ↔ Redis (실시간 메시지 큐)
 ⦁	실시간 채팅 서버에서는 Redis를 사용하여 메시지를 중계
