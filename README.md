@@ -87,6 +87,7 @@
 
 
 📌 설명
+
 ✅ User → Router → Nginx (Reverse Proxy)
 ⦁	사용자가 사이트에 접속
 ⦁	Nginx가 Reverse Proxy 역할을 수행하여 요청을 적절한 서비스로 분배
