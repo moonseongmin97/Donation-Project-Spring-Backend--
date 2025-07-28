@@ -54,7 +54,7 @@ public class SecurityConfig {
         System.out.println("CORS configuration initialized");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true); // 쿠키 전송 허용
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // React 앱 주소 허용
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // React 앱 주소 허용  *로컬용 실서버는 nginx가 출처 잡아줌.
         configuration.setAllowedMethods(Arrays.asList("*")); // 허용할 HTTP 메서드
         configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더 허용
         configuration.setExposedHeaders(Arrays.asList("Authorization")); // JWT 토큰 노출 허용
