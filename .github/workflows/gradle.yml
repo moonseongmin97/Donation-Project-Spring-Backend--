@@ -1,33 +1,30 @@
-name: Java CI/CD with Gradle
+name: Java CI/CD (Main Backend)
 
 on:
   push:
-    branches: [ "master" ] # 마스터 브랜치에 푸시될 때 실행
+    branches: [ "master" ]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # [1단계] 소스 코드 가져오기
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # [2단계] Java 세팅 (프로젝트의 JDK 버전에 맞춤)
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
 
-    # [3단계] Gradle 빌드 실행
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
 
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build -x test # 테스트를 제외하고 빌드하여 jar 생성
+    - name: Build with Gradle
+      run: ./gradlew build -x test
 
-    # [4단계] 빌드된 JAR 파일을 서버로 전송 (SCP)
+    # 1. JAR 파일을 서버의 임시 경로(/var/www/backend)로 전송
     - name: Copy JAR to Server
       uses: appleboy/scp-action@v0.1.7
       with:
@@ -35,11 +32,12 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         port: 2222
-        source: "build/libs/*.jar"
-        target: "/var/www/backend" # 아까 Permission Denied 났던 그 경로
+        source: "build/libs/*-SNAPSHOT.jar"
+        target: "/var/www/backend"
         strip_components: 2
+        overwrite: true
 
-    # [5단계] 서버에서 기존 앱 종료 및 새 앱 실행 (SSH)
+    # 2. 기존 파일 백업, 새 파일 삽입 및 서비스 재시작
     - name: Execute remote ssh commands
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -48,11 +46,17 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: 2222
         script: |
-          # 기존 프로세스 종료
-          sudo fuser -k 8080/tcp || true
+          # 기존 ROOT.jar가 있으면 날짜별 백업 (사용자 요청 반영)
+          if [ -f "/var/www/backend/ROOT.jar" ]; then
+            mv /var/www/backend/ROOT.jar /var/www/backend/ROOT.jar.bak_$(date +%Y%m%d_%H%M%S)
+          fi
           
-          # 구버전 백업 삭제
-          rm -rf /var/www/backend/*.jar.bak || true
+          # 새로 온 SNAPSHOT.jar를 ROOT.jar로 변경 (파일 삽입)
+          mv /var/www/backend/*-SNAPSHOT.jar /var/www/backend/ROOT.jar
           
-          # 새 버전 실행 (nohup으로 백그라운드 실행)
-          nohup java -jar /var/www/backend/*.jar > /var/www/backend/app.log 2>&1 &
+          # systemd 서비스 재시작 (tmux 없이 관리)
+          sudo systemctl restart donation-backend
+          
+          # 배포 결과 확인
+          ls -l /var/www/backend/ROOT.jar*
+          systemctl status donation-backend --no-pager
