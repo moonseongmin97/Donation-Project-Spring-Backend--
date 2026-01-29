@@ -21,6 +21,10 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
 
+    # [중요] 127 에러 해결을 위해 gradlew에 실행 권한 부여
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
     - name: Build with Gradle
       run: ./gradlew build -x test
 
@@ -46,15 +50,15 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: 2222
         script: |
-          # 기존 ROOT.jar가 있으면 날짜별 백업 (사용자 요청 반영)
+          # 기존 ROOT.jar가 있으면 날짜별 백업
           if [ -f "/var/www/backend/ROOT.jar" ]; then
             mv /var/www/backend/ROOT.jar /var/www/backend/ROOT.jar.bak_$(date +%Y%m%d_%H%M%S)
           fi
           
-          # 새로 온 SNAPSHOT.jar를 ROOT.jar로 변경 (파일 삽입)
+          # 새로 온 SNAPSHOT.jar를 ROOT.jar로 변경
           mv /var/www/backend/*-SNAPSHOT.jar /var/www/backend/ROOT.jar
           
-          # systemd 서비스 재시작 (tmux 없이 관리)
+          # systemd 서비스 재시작
           sudo systemctl restart donation-backend
           
           # 배포 결과 확인
