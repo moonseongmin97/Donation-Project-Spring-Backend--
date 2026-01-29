@@ -1,41 +1,14 @@
-name: Java CI/CD with Gradle
-
-on:
-  push:
-    branches: [ "master" ]
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-
-    # 1. 빌드 (테스트 제외 시 -x test 추가)
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build -x test
-
-    # 2. JAR 파일을 서버로 전송 (SCP)
+# 2. JAR 파일을 서버로 전송 (SCP)
     - name: Copy JAR to Server
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
+        port: 2222  # <--- SSH 포트 번호 추가
         source: "build/libs/*.jar"
         target: "/home/ubuntu/app"
-        strip_components: 2 # build/libs 경로를 제외하고 파일만 전송
+        strip_components: 2
 
     # 3. 서버에서 기존 앱 끄고 새 앱 실행 (SSH)
     - name: Execute remote ssh commands
@@ -44,13 +17,13 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
+        port: 2222  # <--- 여기도 포트 번호 추가
         script: |
-          # 1. 기존 실행 중인 자바 프로세스 종료 (8080 포트 기준)
+          # 1. 기존 실행 중인 자바 프로세스 종료 (서비스 포트 8080 기준)
           sudo fuser -k 8080/tcp || true
           
-          # 2. 기존 JAR 파일 삭제 (버전 꼬임 방지)
+          # 2. 기존 JAR 파일 정리
           rm -rf /home/ubuntu/app/*.jar.bak
           
-          # 3. 새 JAR 실행 (tmux 대신 nohup 사용 - 백그라운드 실행의 정석)
-          # 로그는 app.log에 기록됩니다.
+          # 3. 새 JAR 실행 (로그는 app.log에 기록)
           nohup java -jar /home/ubuntu/app/*.jar > /home/ubuntu/app/app.log 2>&1 &
