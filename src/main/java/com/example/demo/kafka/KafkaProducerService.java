@@ -1,4 +1,4 @@
-package com.example.demo.donate.kafka;
+package com.example.demo.kafka;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
