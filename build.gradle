@@ -59,7 +59,7 @@ dependencies {
 
 //jar 파일
 bootJar {
-	archiveFileName = 'ROOT.Jar'
+	archiveFileName = 'ROOT.jar'
 }
 
 tasks.named('bootBuildImage') {

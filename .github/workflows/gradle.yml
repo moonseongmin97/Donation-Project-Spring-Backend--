@@ -36,7 +36,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         port: 2222
-        source: "build/libs/*-SNAPSHOT.jar"
+        source: "build/libs/ROOT.jar"
         target: "/var/www/backend"
         strip_components: 2
         overwrite: true
@@ -52,15 +52,12 @@ jobs:
         script: |
           # 기존 ROOT.jar가 있으면 날짜별 백업
           if [ -f "/var/www/backend/ROOT.jar" ]; then
-            mv /var/www/backend/ROOT.jar /var/www/backend/ROOT.jar.bak_$(date +%Y%m%d_%H%M%S)
+            cp /var/www/backend/ROOT.jar /var/www/backend/ROOT.jar.bak_$(date +%Y%m%d_%H%M%S)
           fi
-          
-          # 새로 온 SNAPSHOT.jar를 ROOT.jar로 변경
-          mv /var/www/backend/*-SNAPSHOT.jar /var/www/backend/ROOT.jar
-          
+
           # systemd 서비스 재시작
           sudo systemctl restart donation-backend
-          
+
           # 배포 결과 확인
           ls -l /var/www/backend/ROOT.jar*
           systemctl status donation-backend --no-pager
