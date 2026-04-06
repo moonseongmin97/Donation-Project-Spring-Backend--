@@ -2,7 +2,6 @@ plugins {
 	id 'org.springframework.boot' version '3.2.11'
 	id 'io.spring.dependency-management' version '1.1.3'
 	id 'java'
-	id 'war'
 	
 }
 
@@ -38,9 +37,6 @@ dependencies {
 	// MapStruct -> 대체용 매핑시킴
 	implementation 'org.modelmapper:modelmapper:3.1.0'
 
-    // Lombok-MapStruct Binding
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
-    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
   	//redis
   	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -61,8 +57,8 @@ dependencies {
 }
 
 
-bootWar {
-	archiveFileName = 'ROOT.war'
+bootJar {
+	archiveFileName = 'ROOT.jar'
 }
 
 tasks.named('bootBuildImage') {
