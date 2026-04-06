@@ -2,6 +2,7 @@ package com.example.demo.donate.donate.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.auth.dto.MemberResponseDto;
@@ -12,6 +13,8 @@ import com.example.demo.donate.donate.dto.DonateResponseDto;
 import com.example.demo.donate.donate.entity.DonateEntity;
 import com.example.demo.donate.donate.repository.DonateRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -19,13 +22,19 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class DonateService  {
 
     @Autowired
     private  ModelMapper modelMapper;
-    
+
     @Autowired
     private DonateRepository  donateRepository;
+
+    @Autowired
+    private KafkaTemplate<String, Object> kafkaTemplate;
+
+    private static final String DONATION_TOPIC = "donation-topic";
 
 
     
@@ -56,10 +65,14 @@ public class DonateService  {
 	            result.put("state", false);
 	            result.put("msg", "등록 중 오류 발생(기부 상세 조회 불가)");
 	        }else {
-	        	DonateResponseDto responseDto = modelMapper.map(response.get(), DonateResponseDto.class);  // DonateEntity -> DonateResponseDto	 
+	        	DonateResponseDto responseDto = modelMapper.map(response.get(), DonateResponseDto.class);  // DonateEntity -> DonateResponseDto
+
+	        	// Kafka로 기부 이벤트 발행
+	        	sendDonationToKafka(donateRequestDto);
+
 			      result.put("state", true);
 		          result.put("msg", "기부 등록 성공");
-		          result.put("data", responseDto);	        	
+		          result.put("data", responseDto);
 	        } 
     		
     	}catch(Exception e){   		
@@ -156,7 +169,26 @@ public class DonateService  {
    	
         return result;
     }
-    
-    
+
+    /**
+     * Kafka로 기부 이벤트 발행
+     */
+    private void sendDonationToKafka(DonateRequestDto dto) {
+        try {
+            Map<String, Object> message = new HashMap<>();
+            message.put("userId", dto.getUserId());
+            message.put("userName", dto.getUserName());
+            message.put("amount", dto.getAmount());
+            message.put("message", dto.getMessage());
+            message.put("status", dto.getStatus());
+            message.put("bankId", dto.getBankId());
+            message.put("timestamp", System.currentTimeMillis());
+
+            kafkaTemplate.send(DONATION_TOPIC, message);
+            log.info("Kafka 메시지 발행 완료 - topic: {}, userId: {}", DONATION_TOPIC, dto.getUserId());
+        } catch (Exception e) {
+            log.error("Kafka 메시지 발행 실패", e);
+        }
+    }
 
 }
